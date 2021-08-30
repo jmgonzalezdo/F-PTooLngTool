@@ -1,0 +1,62 @@
+import os
+from pathlib import Path
+import numpy as np 
+
+Files_long = list()
+Tupla_filepath = ('Path','File_Name', 'Character_Length', 'Filename_Length', 'file_size (MB)', '')
+Files_long.append(Tupla_filepath)
+counter_menores = 0
+counter_total = 0
+counter_indice= 1
+counter_remove= 0
+for dirname, dirnames, filenames in os.walk('d:\XXXXX'): # poner la ruta que se quiere analizar
+    for filename in filenames:
+        flag=False
+        flag2=False
+        counter_total+=1
+        if (len(os.path.join(dirname, filename)) > 240): # cual es el maximo de caracteres que se quiere identificar
+            Path(os.path.join(dirname, filename)).stat()
+            file_size =round(((Path(os.path.join(dirname, filename)).stat().st_size)/1024)/1024,3)
+            
+            Extension= filename[-4:]
+            if (Extension =="s.db"):
+                Extension = '.db'
+            if (Extension =="xlsx"):
+                Extension = '.xlsx'
+            if (Extension =="raba"):
+                Extension = filename
+            if (Extension =="erno"):
+                Extension = filename
+            if (len(Extension) > 5):
+                Extension = ""
+            if (filename.find("doc_") >= 0):
+                flag2=True
+            else:
+                consecutivo= str(counter_indice)
+                Files_newname="doc_" + consecutivo + Extension
+                counter_indice+=1
+            specialChars = ","            
+            for specialChar in specialChars:
+                newfilename = filename.replace(specialChar, '___') #en caso de encontrar comas en el nombre los cambia por 3 guines bajos y despues los podmeos remplazar por la coma
+                newdirname = dirname.replace(specialChar, '___') #idem
+                     
+            if (filename.find("~$") > 0):
+                os.remove(dirname+"\\"+filename)
+                flag=True
+                counter_remove+=1
+         
+            if (flag==True):
+                Tupla_filepath = (newdirname, newfilename,len(os.path.join(dirname, filename)),len(filename),file_size, "Archivo Eliminado por se temporal")        
+            else:    
+                if (flag2==True):
+                    Tupla_filepath = (newdirname, newfilename,len(os.path.join(dirname, filename)),len(filename),file_size, "Revisar el Path")  
+                else:    
+                    Tupla_filepath = (newdirname, newfilename,len(os.path.join(dirname, filename)),len(filename),file_size, Files_newname)        
+                    os.rename(dirname+'\\'+filename,dirname+'\\'+Files_newname)         
+            Files_long.append(Tupla_filepath)
+        else:
+            counter_menores+=1
+            
+print('total de archivo: ', counter_total, ' menores al limite: ', counter_menores, 'supera al limite: ', counter_total-counter_menores, 'eliminados: ',counter_remove)   
+np.savetxt("d:\\numpy_test.csv",Files_long, delimiter =",",fmt ='% s') #se guarda a un archivo csv
+    
