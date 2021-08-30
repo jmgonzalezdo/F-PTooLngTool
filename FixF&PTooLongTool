@@ -1,9 +1,20 @@
-import os
+# *********************************************************************
+# ************************ OS Module **********************************
+# ** OS module allows you to perform OS-dependent operations such as **
+# ** creating a folder, listing the contents of a folder, etc.       **
+# ** Link reference: https://docs.python.org/es/3.10/library/os.html **
+# ************************* pathlib ***********************************
+# ** The Pathlib module in Python deals with path related tasks,     ** 
+# ** such as constructing new paths from names of files and from     **
+# ** other paths, checking for various properties of paths and       **
+# ** creating files and folders at specific paths.                   **
+# *********************************************************************
+import os  
 from pathlib import Path
 import numpy as np 
 
 Files_long = list()
-Tupla_filepath = ('Path','File_Name', 'Character_Length', 'Filename_Length', 'file_size (MB)', '')
+Tupla_filepath = ('Path','File_Name', 'Character_Length', 'Filename_Length', 'file_size (MB)', '') 
 Files_long.append(Tupla_filepath)
 counter_menores = 0
 counter_total = 0
